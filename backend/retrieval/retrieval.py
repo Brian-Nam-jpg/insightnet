@@ -55,12 +55,14 @@ def retrieve(query_plan: QueryPlan, query_embedding: list[float], top_k: int = 1
     # ── Reciprocal Rank Fusion: score(d) = Σ 1/(60 + rank_i) ────────
     rrf: dict[str, float] = defaultdict(float)
     best: dict[str, tuple[str, str]] = {}  # repo → (chunk_text, collection)
+    best_score: dict[str, float] = {}  # repo → best individual hit score
 
     for repo, text, col_name, rank in all_hits:
         score = 1.0 / (60 + rank)
         rrf[repo] += score
-        if repo not in best or rrf[repo] > best.get(repo, (0,))[0]:
+        if repo not in best or score > best_score.get(repo, 0.0):
             best[repo] = (text, col_name)
+            best_score[repo] = score
 
     ranked = []
     for repo, score in sorted(rrf.items(), key=lambda x: x[1], reverse=True)[:20]:
