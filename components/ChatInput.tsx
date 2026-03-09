@@ -17,7 +17,7 @@ export default function ChatInput({ onSend }: { onSend: (text: string) => void }
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          className="flex-1 text-md outline-none bg-white rounded-lg px-4 py-3 shadow-sm"
+          className="flex-1 text-md outline-none text-black bg-white rounded-lg px-4 py-3 shadow-sm"
           placeholder="Ask something..."
         />
         <button
